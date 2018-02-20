@@ -168,14 +168,20 @@ typedef NS_ENUM(NSUInteger, KeyboardTrackingScrollBehavior) {
         }
         else if ([subview isKindOfClass:NSClassFromString(@"RCTUITextView")])
         {
-            UITextView *textView = [subview valueForKey:@"_backedTextInput"];
-            if (textView != nil)
-            {
-                [textView setInputAccessoryView:_observingInputAccessoryView];
-                [textView reloadInputViews];
+            UITextView *textView = (UITextView*) subview;
+            [textView setInputAccessoryView:_observingInputAccessoryView];
+            [textView reloadInputViews];
                 
-                [_inputViewsMap setObject:textView forKey:@(kInputViewKey)];
-            }
+            [_inputViewsMap setObject:textView forKey:@(kInputViewKey)];
+        }
+         else if ([subview isKindOfClass:NSClassFromString(@"RNDJDraftJSEditor")])
+        {
+            // Not actually a text view, but implements setInputAccessoryView
+            UITextView *textView = (UITextView*) subview;
+            [textView setInputAccessoryView:_observingInputAccessoryView];
+            [textView reloadInputViews];
+            
+            [_inputViewsMap setObject:textView forKey:@(kInputViewKey)];
         }
         else if ([subview isKindOfClass:[UIWebView class]])
         {
